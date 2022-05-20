@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.todo.mapper.TodoMapper">
+<resultMap type="com.example.todo.item.Item" id="item">
+<id column="id" property="id" />
+<result column="name" property="name" />
+<result column="status" property="status" />
+<result column="date" property="date" />
+</resultMap>
+
+<insert id="add" parameterType="com.example.todo.item.Item">
+INSERT INTO items(
+name,
+status,
+date
+)
+
+VALUES (
+#{name},
+#{status},
+#{date}
+)
+</insert>
+
+<select id="getAll" resultMap="item">
+SELECT id, name, status,date
+FROM items
+WHERE id = #{id}
+</select>
+
+<update id="update" parameterType="com.example.todo.item.Item">
+UPDATE items
+SET
+name = #{name},
+status = #{status}
+date = #{date}
+WHERE id = #{id}
+</update>
+
+<select id="search" parameterType="String" resultMap="item">
+SELECT id,name,status,date
+FROM items
+WHERE status = 0
+<if test="name!=null">
+	AND name like '%'|| #{name}||'%'
+	</if>
+</select>
+
+<delete id="delete" parameterType="Integer">
+DELETE FROM items
+WHERE id = #{id}
+</delete>
+</mapper>
